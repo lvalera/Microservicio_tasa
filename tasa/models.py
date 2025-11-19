@@ -15,6 +15,14 @@ class TasaCambio(models.Model):
         max_digits=8, decimal_places=2, help_text="El valor de 1 USD en VES"
     )
 
+    valor_euro = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        help_text="El valor de 1 EUR en VES",
+        null=True,  # Importante: Permite nulos en la BD
+        blank=True,  # Importante: Permite que esté vacío en el Admin
+    )
+
     # Fecha en que esta tasa entra en vigencia.
     # Usamos default=timezone.now para que tome la fecha actual
     # al crearla en el admin, pero se puede cambiar.
@@ -31,6 +39,10 @@ class TasaCambio(models.Model):
         ordering = ["-fecha_vigencia"]
 
     def __str__(self):
-        # Esto es para que en el panel de admin se vea
-        # "Tasa del [fecha]: [valor]" en lugar de "TasaCambio object (1)"
-        return f"Tasa del {self.fecha_vigencia}: {self.valor} VES"
+        # Actualizamos el 'str' para que muestre ambas monedas
+        usd_str = f"USD: {self.valor}"
+
+        # Mostramos el EUR solo si tiene un valor
+        eur_str = f"EUR: {self.valor_euro}" if self.valor_euro else ""
+
+        return f"Tasa del {self.fecha_vigencia} - {usd_str} | {eur_str}"

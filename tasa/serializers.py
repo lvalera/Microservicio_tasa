@@ -5,12 +5,10 @@ from .models import TasaCambio
 class TasaCambioSerializer(serializers.ModelSerializer):
     """
     Serializer para el modelo TasaCambio.
-    Convierte el modelo TasaCambio a formato JSON.
     """
 
     class Meta:
         model = TasaCambio
 
-        # Le decimos qué campos del modelo queremos exponer
-        # en nuestra API.
-        fields = ["valor", "fecha_vigencia"]
+        # Añadimos 'valor_euro' a la lista de campos a exponer
+        fields = ["valor", "valor_euro", "fecha_vigencia"]
